@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8 blocks problem</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #000;
+            min-height: 200vh;
+            overflow-x: hidden;
+        }
+        
+        .bg img {
+            top: 80px;
+            padding-left: 10%;
+            padding-right: 3%;
+            width: auto;
+            z-index: -2;
+            background-size:cover;
+            position: absolute;
+            opacity: 0;
+            animation: launchbg .5s linear .3s;
+            animation-fill-mode: forwards;
+        }
+        @keyframes launchbg  {
+            0% {
+                opacity: 0;
+                clip-path: inset(0% 0% 75% 0%);
+            }
+            
+            100% {
+                opacity: .7; 
+                clip-path: inset(0% 0% 0% 0%);
+            }
+        }
+        
+        .gradient1 {
+            position: fixed;
+            width: 100%;
+            min-height: 100vh;
+            background: repeating-linear-gradient(to bottom,rgba(0, 0, 0, 0.8),transparent); 
+            top:0;
+            z-index: -1;
+        }
+        .gradient2 {
+            position: fixed;
+            width: 100%;
+            min-height: 100vh;
+            background: repeating-linear-gradient(to top,rgba(0, 0, 0, 0.8),transparent); 
+            bottom:0;
+            z-index: -1;
+        }
+        header {
+            position: sticky;
+            width: 100%;
+            top:0;
+            z-index: 3;
+            box-shadow: 0 15px 10px rgba(255,255,255,.1);
+        }
+        header nav {
+            display: flex;
+            align-items: center;
+            
+            top:0;
+            background-color: #000;
+            width: 100%;
+            height: 60px;
+        }
+        header nav .hamburger {
+            position: absolute;
+            display: flex;
+            cursor: pointer;
+            padding: 5px;
+            flex-direction: column;
+            right: 30px;
+            margin-top:15px;
+            height: 30px;
+            justify-content: space-between;
+            border-radius: 3px;
+            transition: .5s;
+        }
+        header nav .hamburger:hover {
+            background-color: rgba(255,255,255,.3);
+        }
+        header nav .hamburger div {
+            width: 25px;
+            height: 2px;
+            background-color: #fff;
+            border-radius: 1px;
+            
+        }
+        .title {
+            z-index: 2;
+            position: fixed;
+            top:-6px;
+            left: 3%;
+            opacity: 0;
+            animation: launchTitle .1s linear 1s;
+            animation-fill-mode: forwards;
+            z-index: 4;
+        }
+        @keyframes launchTitle {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        .title h2{
+            color: #fff;
+            font-weight: 600;
+            font-size: 22px;
+            cursor: default;
+        }
+        .title h2 span {
+            color: rgb(2, 154, 255);
+            font-size: 50px;
+        }
+        .margin {
+            min-height: 100vh;
+            position: relative;
+            margin-top: -2px;
+            left: 55%;
+            width: 180px;
+            border: 2px solid #fff;
+            opacity:0;
+            animation : lineup1 .7s linear 1.1s; 
+            animation-fill-mode: forwards;
+            z-index: 4;
+        }
+        @keyframes lineup1 {
+            0% {
+                opacity:1;
+                clip-path: inset(0% 2px 98% 100%);
+            }
+            25% {
+                clip-path: inset(0% 90px 98% 0%);
+            }
+            100% {
+                opacity: 1;
+                clip-path: inset(0% 90px 2px 0%);
+            }
+
+        }
+        .intro {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            
+            top:80px;
+            
+            z-index: 1;
+            margin-right: 15%;
+            flex-wrap: wrap;
+        }
+        .intro .disc h2 {
+            color:#fff;
+            margin-left: 100px;
+            margin-top: 100px;
+            margin-bottom: 30px;
+            
+            font-weight: 600;
+            font-size: 50px;
+            min-width: 250px;
+            opacity: 0;
+            
+            animation: launch .5s ease-out 1.7s;
+            animation-fill-mode: forwards;
+        }
+        .intro .disc p {
+            margin: 100px;
+            margin-top: -10px;
+            margin-right: 60px;
+            color: #fff;
+            font-size: 15px;
+            min-width: 300px;
+            font-weight: lighter;
+            max-width: 450px;
+            opacity: 0;
+            
+            animation: launch .5s ease-out 1.7s;
+            animation-fill-mode: forwards;
+        }
+        .intro img {
+            z-index: 1;
+            width: 400px;
+            opacity:0;
+            
+            animation: launch .5s ease-out 1.9s;
+            animation-fill-mode: forwards;
+        }
+        .intro .margintxt {
+            position: absolute;
+            left:20px;
+
+        }
+        .intro .margintxt h4 {
+            color: #fff;
+            opacity: 0;
+            animation: launchTitle .5s ease-out 3.0s;
+            animation-fill-mode: forwards;
+        }
+        .intro .margintxt div {
+            height: 2px;
+            background-color: #fff;
+            
+            opacity: 0;
+            animation: marginline 5s ease-out 2s;
+            animation-fill-mode: forwards;
+        }
+        @keyframes marginline {
+            0% {
+                opacity: 1;
+                width: 0px;
+            }
+            100% {
+                width: 100px;
+                opacity: 1;
+            }
+        }
+        @keyframes launch {
+            0% {
+                opacity: 0;
+                clip-path: inset(0% 100% 0% 0%);
+                transform: translateX(-50px);
+            }
+            100% {
+                opacity: 1;
+                clip-path: inset(0% 0% 0% 0%);
+            }
+            
+        }
+        
+        .representation {
+            display: flex;
+            flex-wrap: wrap;
+        
+            /*top: 530px;*/
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            z-index: 1;
+        }
+        .representation .space {
+            display: flex;
+            flex-wrap: wrap;
+            position: relative;
+            margin-left: 230px;
+            margin-right: 100px;
+            width: 100%;
+            justify-content: space-between;
+        }
+        .representation .margintxt {
+            position: absolute;
+            left:15px;
+            margin-top: 20px;
+        }
+        .representation .margintxt h4 {
+            color: #fff;
+            opacity: 0;
+            
+            animation: launchTitle .5s ease-out 3.0s;
+            animation-fill-mode: forwards;
+        }
+        .representation .margintxt div {
+            height: 2px;
+            background-color: #fff;
+            
+            opacity: 0;
+            animation: marginline 5s ease-out 2s;
+            animation-fill-mode: forwards;
+            
+        }
+        .representation .space .statespace {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            align-items: center;
+            
+        }
+        .representation .space .statespace div,.representation .space .searchspace div {
+            position: absolute;
+            height: 150px;
+            width: 360px;
+            border: 2px solid #fff;
+            opacity: 0;
+            
+            animation: launch .5s ease-out 1.7s;
+            animation-fill-mode: forwards;
+        }
+        .representation .space .statespace h2 {
+            margin-top: 12px;
+            color: #fff;
+            
+            font-size: 20px;
+            font-weight: lighter;
+            opacity: 0;
+            animation: launchTitle .5s ease-out 2s;
+            animation-fill-mode: forwards;
+            
+        }
+        .representation .space .statespace p {
+            color: #fff;
+            max-width: 330px;
+            opacity: 0;
+            font-weight: lighter;
+            font-size: 15px;
+            animation: launchTitle .5s ease-out 1.8s;
+            animation-fill-mode: forwards;
+        }
+        .representation .space h2 {
+            color: #fff;
+            max-width: 200px;
+            font-size: 20px;
+            font-weight: lighter;
+            text-align: center;
+            margin: 10px;
+            margin-top: 30px;
+        }
+        .representation .space .searchspace {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            
+        }
+        .representation .space .searchspace h2 {
+            margin-top: 12px;
+            color: #fff;
+            font-size: 20px;
+            font-weight: lighter;
+            opacity: 0;
+            animation: launchTitle .5s ease-out 2s;
+            animation-fill-mode: forwards;
+        }
+        .representation .space .searchspace p {
+            color: #fff;
+            max-width: 330px;
+            font-weight: lighter;
+            font-size: 15px;
+            opacity: 0;
+            animation: launchTitle .5s ease-out 1.8s;
+            animation-fill-mode: forwards;
+        }
+        .sampleboard {
+            display: grid;
+            grid-template-columns: 55px 55px 55px;
+            grid-template-rows: 55px 55px 55px;
+            justify-content: center;
+            padding-left: 150px;
+            margin-top: 80px;
+            align-items: center;
+            opacity: 0;
+            z-index: 1;
+            animation: launch .5s ease-out 1.7s;
+            animation-fill-mode: forwards;
+        }
+        .sampleboard .margintxt {
+            position: absolute;
+            margin-top: 70px;
+            left:15px;
+        }
+        .sampleboard .margintxt h4 {
+            color: #fff;
+            opacity: 0;
+            animation: launchTitle .5s ease-out 3.0s;
+            animation-fill-mode: forwards;
+        }
+        .sampleboard .margintxt div {
+            height: 2px;
+            background-color: #fff;
+            z-index: 1;
+            opacity: 0;
+            animation: marginline 5s ease-out 2s;
+            animation-fill-mode: forwards;
+        }
+        .sampleboard .grid-box {
+            
+            height: 50px;
+            width: 50px;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            background: radial-gradient(rgba(255, 255, 255, 0.411),rgba(255, 255, 255, 0.205));
+            transition: .1s;
+            cursor:pointer;
+            
+        }
+        .sampleboard .grid-box:hover {
+            box-shadow: 0 1px 3px rgba(255, 255, 255, 0.712);
+            color:#fff;
+        }
+        .active-box {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .formulation {
+            align-items: center;
+            justify-content: space-between;
+            display: flex;
+            z-index: 1;
+            margin-left: 200px;
+            margin-right: 50px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .formulation .margintxt {
+            position: absolute;
+            left:15px;
+            margin-top: 60px;
+        }
+        .formulation .margintxt h4 {
+            color: #fff;
+            opacity: 0;
+            
+            animation: launchTitle .5s ease-out 3.0s;
+            animation-fill-mode: forwards;
+        }
+        .formulation .margintxt div {
+            height: 2px;
+            background-color: #fff;
+            
+            opacity: 0;
+            animation: marginline 5s ease-out 2s;
+            animation-fill-mode: forwards;
+        }
+        .formulation .node {
+            display: flex;
+            
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 70px;
+        }
+        .formulation .action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 70px;
+        }
+        .formulation .heuristic {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 70px;
+        }
+        .formulation .goal {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 70px;
+        }
+        .formulation h2 {
+            margin-top: 10px;
+            color: #fff;
+            
+            font-size: 20px;
+            font-weight: lighter;
+            opacity: 0;
+            animation: launchTitle .5s ease-out 2s;
+            animation-fill-mode: forwards;
+        } 
+        .formulation p {
+            color: #fff;
+            max-width: 250px;
+            font-weight: lighter;
+            font-size: 15px;
+            opacity: 0;
+            animation: launchTitle .5s ease-out 1.8s;
+            animation-fill-mode: forwards;
+        }
+        .formulation .square {
+            border: 2px solid;
+            border-color: #fff;
+            width:300px;
+            height: 170px;
+            position: absolute;
+            
+            opacity: 0;
+            
+            animation: launch .5s ease-out 1.7s;
+            animation-fill-mode: forwards;
+        }
+        .algorithms {
+            display: flex;
+            margin-left: 230px;
+            margin-right: 80px;
+            z-index: 1;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .algorithms .margintxt {
+            position: absolute;
+            left: 15px;
+            margin-top: 80px;
+        }
+        .algorithms .margintxt h4 {
+            color: #fff;
+            opacity: 0;
+            
+            animation: launchTitle .5s ease-out 3.0s;
+            animation-fill-mode: forwards;
+        }
+        .algorithms .margintxt div {
+            height: 2px;
+            background-color: #fff;
+            
+            opacity: 0;
+            animation: marginline 5s ease-out 2s;
+            animation-fill-mode: forwards;
+        }
+        .algorithms .BFS, .algorithms .DFS, .algorithms .Astar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-top: 80px;
+        }
+        .algorithms h2 {
+            margin-top: 10px;
+            color: #fff;
+            
+            font-size: 20px;
+            font-weight: lighter;
+            opacity: 0;
+            animation: launchTitle .5s ease-out 2s;
+            animation-fill-mode: forwards;
+        }
+        .algorithms p {
+            color: #fff;
+            max-width: 250px;
+            font-weight: lighter;
+            font-size: 15px;
+            opacity: 0;
+            animation: launchTitle .5s ease-out 1.8s;
+            animation-fill-mode: forwards;
+        }
+        .algorithms .box {
+            border: 2px solid;
+            border-color: #fff;
+            width:300px;
+            height: 250px;
+            position: absolute;
+            
+            opacity: 0;
+            
+            animation: launch .5s ease-out 1.7s;
+            animation-fill-mode: forwards;
+        }
+        .solution {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 200px;
+            z-index: 1;
+            height: 50px;
+            margin-right: 80px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        .solution .margintxt {
+            position: absolute;
+            left: 15px;
+        }
+        .solution .margintxt h4 {
+            color: #fff;
+            opacity: 0;
+            
+            animation: launchTitle .5s ease-out 3.0s;
+            animation-fill-mode: forwards;
+        }
+        .solution .margintxt div {
+            height: 2px;
+            background-color: #fff;
+            
+            opacity: 0;
+            animation: marginline 5s ease-out 2s;
+            animation-fill-mode: forwards;
+        }
+        .solution h2 {
+            margin-top: 10px;
+            
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.205);
+            
+            opacity: 0;
+            animation: launchTitle .5s ease-out 2s;
+            animation-fill-mode: forwards;
+            cursor: pointer;
+            transition: .3s;
+        }
+        .solution h2 a {
+            color: #fff;
+            border-radius: 5px;
+            font-size: 20px;
+            font-weight: lighter;
+            text-decoration: none;
+        }
+        .solution h2:hover {
+            font-size: 20.5px;
+            box-shadow: 0 10px 10px rgba(255, 255, 255, 0.712);
+        }
+        @media screen and (max-width:700px ) {
+            .margin {
+                border: 2px solid transparent;
+            }
+            .intro .disc h2 {
+                margin: 20px;
+                margin-top: 50px;
+            }
+            .intro .disc p {
+                margin: 20px;
+            }
+            .intro .margintxt h4 {
+                transform: rotateZ(-90deg) translateY(-55px) translateX(-50px);
+            }
+            .intro .margintxt div {
+                background-color: transparent;
+            }
+            
+            
+            .representation .space {
+               margin: 20px;
+               align-items: center;
+               justify-content: center;
+               display: flex;
+            }
+            .representation .space .searchspace {
+                margin: auto;
+            }
+            .representation .space .statespace {
+                margin: auto;
+            }
+            .representation .margintxt h4 {
+                transform: rotateZ(-90deg) translateY(-55px);
+            }
+            .representation .margintxt div {
+                background-color: transparent;
+            }
+            .sampleboard {
+                padding-left: 0px;
+            }
+            .sampleboard .margintxt h4 {
+                transform: rotateZ(-90deg) translateY(-55px);
+            }
+            .sampleboard .margintxt div {
+                background-color:transparent;
+            }
+            .formulation {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .formulation .margintxt h4 {
+                transform: rotateZ(-90deg) translateY(-55px);
+            }
+            .formulation .margintxt div {
+                background-color: transparent;
+            }
+            .algorithms {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .algorithms .margintxt h4 {
+                
+                transform: rotateZ(-90deg) translateY(-55px);
+            }
+            .algorithms .margintxt div {
+                background-color: transparent;
+            }
+            .solution {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .solution .margintxt h4 {
+                
+                transform: rotateZ(-90deg) translateY(-55px);
+            }
+            .solution .margintxt div {
+                background-color: transparent;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="gradient1"></div>
+    <div class="gradient2"></div>
+    <header>
+        <nav>
+            <div class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        </nav>
+    </header>
+    <div class="title"><h2><span>.</span>8-blocks Problem<span>.</span></h2>
+        <div class="margin"></div>
+    </div>
+    <div class="intro">
+        <div class="margintxt">
+            <h4>Introduction</h4>
+            <div></div>
+        </div>
+        <div class="disc">
+        <h2>Goal Based Agents</h2>
+        <p>Goal based agents are those intelligent agents in AI 
+            who focus on reaching the goal. Each of their actions is made towards the
+            goal. Actually they compute at each state their cost to reach the goal and
+            proceed optimally. <br>
+            In AI the fields utilizing the goal based agents are 
+            travellling salesman, vlsi layout design, protien design, shortest route.
+            All depends on the search agents and optimisation. 
+        </p>
+        </div>
+        <img src="../img/portf/blocks1.png" alt="">
+    </div>
+    <div class="representation">
+        <div class="margintxt">
+            <h4>Representation</h4>
+            <div></div>
+        </div>
+        
+        <div class="space">
+            <div class="statespace">
+                <div></div>
+                <h2>State Space</h2>
+                <p>Each state in the state space is a node of the tree.
+                     A node, typically has
+                     some important information, which is parent, children, depth, path cost,
+                    and the associated state in the state space.
+                </p>
+            </div>
+            <h2>"Representation is the key in search based agents"</h2>
+            <div class="searchspace" id="board">
+                <div></div>
+                <h2>Seach Space</h2>
+                <p>The search space is typically represented
+                    by search tree that actually models the sequence of actions.
+                 The branches represent the actions that we could do.</p>
+            </div>
+        </div>
+    </div>
+    <div class="sampleboard">
+        <div class="margintxt">
+            <h4>Sample Board</h4>
+            <div></div>
+        </div>
+        <div class="grid-box">1</div>
+        <div class="grid-box">2</div>
+        <div class="grid-box">3</div>
+        <div class="grid-box">4</div>
+        <div class="grid-box">5</div>
+        <div class="grid-box">6</div>
+        <div class="grid-box">7</div>
+        <div class="grid-box">8</div>
+        <div class="grid-box active-box"></div>
+    </div>
+    <div class="formulation">
+        <div class="margintxt">
+            <h4>Formulation</h4>
+            <div></div>
+        </div>
+        <div class="node">
+            <h2>A Node</h2>
+            <p>Each node in the seacrch space is a list containing the elements
+                of the board in row major wise.
+            </p>
+            <div class="square"></div>
+        </div>
+        <div class="action">
+            <h2>Action</h2>
+            <p>The Action is only applicable on the blank space on the board.
+                Only this space can be moved up, right, left or down resulting
+                 in position swap. 
+            </p>
+            <div class="square"></div>
+        </div>
+        <div class="heuristic">
+            <h2>Heuristic</h2>
+            <p>We could although take the number of misplaced blocks but 
+                Manhattan distance in this case works best. 
+            </p>
+            <div class="square"></div>
+        </div>
+        <div class="goal">
+            <h2>Goal State</h2>
+            <p>Its the board 
+                position which has all 1 to 8 blocks arranged in order with blank 
+                block at first position.
+            </p>
+            <div class="square"></div>
+        </div>
+    </div>
+    <div class="algorithms">
+        <div class="margintxt">
+            <h4>Algorithms</h4>
+            <div></div>
+        </div>
+        <div class="BFS">
+            <h2>BFS</h2>
+            <p>Breadth First Search is a simple uninformed searching 
+                algorithm that gives
+                piority to the breadth before depth in a tree and the nodes covered
+                first in a graph. It hence takes a queue for node storage to read 
+                the node entered first. It is generally used for shallow 
+                search depths when the goal state is basically in closer rows
+                (as far as a tree is concerned). 
+            </p>
+            <div class="box"></div>
+        </div>
+        <div class="DFS">
+            <h2>DFS</h2>
+            <p>Depth First Search is a different uninformed searching algorithm
+                that takes into account the newly discovered nodes to be read 
+                first so that it could prioritise the depth of a tree over its breadth.
+                To cover the newly discovered nodes we use stack as our node storage.
+                Hence the stack constantly serves the newly entered nodes on a pop
+                operation.  
+            </p>
+            <div class="box"></div>
+        </div>
+        <div class="Astar">
+            <h2>A*</h2>
+            <p>A* is one of the best searching algorithms known till date. It is 
+                an informed search algorithm that takes into account the activation
+                function for each node. Its activation function is the sum of 
+                path cost for the node and its heuristic value. It is 
+                implemented using a prioritize queue. This queue gets dynamically
+                 updated after each enqueue operation.   
+            </p>
+            <div class="box"></div>
+        </div>
+        
+    </div>
+    <div class="solution">
+        <div class="margintxt">
+            <h4>Into Action</h4>
+            <div></div>
+        </div>
+        <h2><a href="#board">Action.begin( )</a></h2>
+    </div>
+
+    <div class="bg">
+        <img src="../img/portf/bfsProj.PNG" alt="">
+    </div>
+</body>
+<script>
+    window.addEventListener('scroll',function(e){
+        const bg=document.querySelector('.bg img');
+        const scroll=window.pageYOffset;
+        let rate=scroll*.65;
+        bg.style.transform='translate3d(0px,'+rate+'px,0px)';
+    });
+    const box=document.querySelectorAll('.grid-box');
+    const black=document.querySelector('.active-box');
+    const action=document.querySelector('.solution h2')
+    //black.setAttribute('style','grid-column-start:3;grid-row-start:3;');
+
+    for(var i=0;i<9;i++) {
+        var r=Math.floor(i/3)+1; var c=i%3+1;
+        box[i].setAttribute('style',`grid-column-start:${c}; grid-row-start:${r};`);
+    }
+    box.forEach(h=>{
+    
+    
+        h.addEventListener('click',function () {
+        const tc=getComputedStyle(black).gridColumnStart;
+        const tr=getComputedStyle(black).gridRowStart;
+        const sc=getComputedStyle(h).gridColumnStart;
+        const sr=getComputedStyle(h).gridRowStart;
+        if(Math.abs(tc-sc)<=1 && Math.abs(tr-sr)<=1 &&(Math.abs(tc-sc)!=1 || Math.abs(tr-sr)!=1)) 
+        {
+            h.setAttribute('style',`grid-column-start:${tc}; grid-row-start:${tr};`);
+            black.setAttribute('style',`grid-column-start:${sc}; grid-row-start:${sr};`);
+        }
+        /*console.log(getComputedStyle(black).gridColumnStart,
+        getComputedStyle(black).gridRowStart,getComputedStyle(black).opacity);
+        black.setAttribute('style','opacity:1;');*/
+        
+    });
+    
+});
+    var DQ=new Array();
+    action.addEventListener('click',function() {
+        var a=new Array();
+        for(var i=0;i<9;i++) {
+            var c=getComputedStyle(box[i]).gridColumnStart;
+            var r=getComputedStyle(box[i]).gridRowStart;
+            a.push(c-1+(r-1)*3);   
+        }
+        var A=a[8];
+        for(var i=1;i<9;i++) {
+            a[9-i]=a[9-i-1];
+        }
+        a[0]=A;
+        var ar=new Array();
+        for(var i=0;i<9;i++) {
+            ar.push(a.indexOf(i));
+        }
+        DQ.push([ar,0,heu(ar)]);
+        loop();
+        
+    });
+    
+    function loop() {
+        var a=DQ[0][0]; var l=DQ[0][1]; var matched=true;
+        for(var i=0;i<9;i++) {
+            if(a[i]!=i) { matched=false; break; }
+        }
+        if(matched) return;
+        DQ.splice(0,1);
+
+
+
+    }
+
+    function reorder() {
+        for(var i=0;i<DQ.length;i++) {
+            
+        }
+    }
+
+    function expand(ar) {
+        var L=ar[1]; ar=ar[0];
+        var l=new Array();
+        var r=new Array();
+        var u=new Array();
+        var d=new Array();
+        for(var i=0;i<9;i++) {
+            l.push(ar[i]);
+            r.push(ar[i]);
+            u.push(ar[i]);
+            d.push(ar[i]);
+        }
+        left(l);
+        right(r);
+        up(u);
+        down(d);
+        var E=[l,r,u,d];
+        for(var i=0;i<4;i++) {
+            var h=heu(E[i]);
+            var Ar=[E[i],L+1,h+L+1];
+            DQ.push(Ar);
+        }
+        reorder();
+    }
+
+    function heu(ar) {
+        var h=0;
+        for(var i=0;i<9;i++) {
+            var x0=i%3;
+            var y0=Math.floor(i/3);
+            var x=ar[i]%3;
+            var y=Math.floor(ar[i]/3);
+            h+=Math.abs(x-x0)+Math.abs(y-y0);
+        }
+        return h;
+    }
+
+    function up(a) {
+        var y=Math.floor(a.indexOf(0)/3);
+        var x=a.indexOf(0)%3;
+        if(y>0) {
+            a[y*3+x]=a[(y-1)*3+x];
+            a[(y-1)*3+x]=0;
+        }
+    }
+    function down(a) {
+        var y=Math.floor(a.indexOf(0)/3);
+        var x=a.indexOf(0)%3;
+        if(y<2) {
+            a[y*3+x]=a[(y+1)*3+x];
+            a[(y+1)*3+x]=0;
+        }
+    }
+    function left(a) {
+        var y=Math.floor(a.indexOf(0)/3);
+        var x=a.indexOf(0)%3;
+        if(x>0) {
+            a[y*3+x]=a[y*3+x-1];
+            a[y*3+x-1]=0;
+        }
+    }
+    function right(a) {
+        var y=Math.floor(a.indexOf(0)/3);
+        var x=a.indexOf(0)%3;
+        if(x<2) {
+            a[y*3+x]=a[y*3+x+1];
+            a[y*3+x+1]=0;
+        }
+    }
+</script>
+</html>
