@@ -1,0 +1,98 @@
+<!--This is the no animation method
+Here is no animation on the content-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accordian</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .accordian {
+            width: 90%;
+            transition: all 1s;
+        }
+        .accordian__button {
+            width: 100%;
+            display: block;
+            padding: 15px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            background: #333333;
+            color: #ffffff;
+            text-align: left;
+            transition: all 1s;
+        }
+        .accordian__button--active + .accordian__content {
+            display: block;
+        }
+        .accordian__button::after { /*CSS Virtual element*/
+            content:'\25be';  /*Hexadecimal representation of down-triangle 
+            For right triangle: '\25ba' */
+            float: right;
+            transform: scale(1.2);
+        }
+        .accordian__button--active { /* we add this class when btn is clicked */
+            background: #555555;
+        }
+        
+        .accordian__button--active::after {
+            content: '\25b4'; /* up arrow hex value */
+        }
+        .accordian__content {
+            /* non animtion version
+            overflow: hidden;  1st necessary property 
+            max-height: 0;  2nd necessary property 
+            transition: all .3s; */
+            padding: 0 15px;
+            display: none;
+            overflow: auto; /*for not getting the margin-top(b/w btn and content) */
+            background: #555555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Accordian</h1>
+    <div class="accordian">
+        <button class="accordian__button" >Show full text</button>
+        <div class="accordian__content">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam nostrum iure voluptate consequuntur recusandae dicta corporis. Maiores quod quo alias atque ullam nostrum excepturi! Cumque velit dignissimos corporis nostrum accusamus?</p>
+        </div>
+    </div>
+    
+</body>
+<script>
+    var accordbtn=document.querySelectorAll('.accordian__button');
+    accordbtn.forEach(btn => {
+        btn.addEventListener('click',function() {
+            //var accordcontent=btn.nextElementSibling;
+
+            btn.classList.toggle('accordian__button--active');
+            //if this class don't exists, it gets added else removed
+
+            /*
+            if(btn.classList.contains('accordian__button--active')) {
+                accordcontent.style.maxHeight=accordcontent.scrollHeight+'px';
+            }
+            else {
+                accordcontent.style.maxHeight=0;
+            }
+            */
+            
+        });
+    });
+</script>
+</html>
